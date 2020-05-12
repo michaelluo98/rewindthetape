@@ -1,10 +1,5 @@
 ## TODO
 - [ ] setting up user
-  - user model
-    - email (from spotify)
-    - spotify_access_token
-    - spotify_refresh_token
-    - google_credentials
   - users and sessionscontroller
   - faraday
   - google and spotify secrets
