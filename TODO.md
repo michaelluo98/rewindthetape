@@ -1,6 +1,5 @@
 ## TODO
 - [ ] setting up user
-  - users and sessionscontroller
   - add model level verification that user has either spotifyaccess or googlecredentials to 
   - faraday
   - google and spotify secrets
@@ -8,8 +7,12 @@
     - implement as template? both logging in and signing up
   - [ ] connect to google calendar
 - [ ] setup poller:
+  - [ ] design
   - [ ] for check spotify history
   - [ ] job queue?
+
+- polish:
+  - [ ] landing page after signing up and logging in (currently flash message)
 
 - deploying:
   - [ ] consider options
