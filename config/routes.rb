@@ -7,4 +7,8 @@ Rails.application.routes.draw do
   post 'login', to: 'sessions#create'
   get 'welcome', to: 'sessions#welcome'
 
+  get 'connect/spotify', to: 'users#request_spotify_auth'
+  get 'connect/spotify/callback', to: 'users#handle_spotify_callback'
+  get 'connect', to: 'users#connect'
+
 end

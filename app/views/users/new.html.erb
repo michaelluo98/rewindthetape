@@ -1,2 +1,27 @@
-<h1>Sign up</h1>
+<h1>User signup / login flow</h1>
+
+<h2> user_has_spotify <%= @user_has_spotify %> </h2>
+<h2> user_has_google <%= @user_has_google %> </h2>
+
+<%#
+    # states: connected, missing_spotify, missing_google, missing_both
+    # get profile information & use it to determine if users state
+    # if connected: redirect to user show (all connected)
+    # if missing_spotify: change google button, add text to prompt spotify connect
+    # if missing_google: change spotify button, add text to prompt google connect
+    # if missing both: basic, no prompts
+%>
+
+<% if @user_has_spotify %>
+  <h1> user is has spotify </h1>
+<% else %>
+  <h1> user is missing spotify </h1>
+<% end %>
+
+<% if @user_has_google %>
+  <h1> user is has google </h1>
+<% else %>
+  <h1> user is missing google </h1>
+<% end %>
+
 
