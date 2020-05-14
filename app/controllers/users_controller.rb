@@ -31,7 +31,7 @@ class UsersController < ApplicationController
       user_info = JSON.parse(res.body)
 
       user = User.find_or_create_by(spotify_email: user_info['email'])
-      user.update(spotify_access: user_info['access_token'], spotify_refresh: user_info['refresh_token'])
+      user.update(spotify_access: auth_params['access_token'], spotify_refresh: auth_params['refresh_token'])
 
       session[:user_id] = user.id
       session[:connected_to_spotify] = true
