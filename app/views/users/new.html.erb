@@ -1,7 +1,7 @@
 <h1>User signup / login flow</h1>
 
-<h2> user_has_spotify <%= @user_has_spotify %> </h2>
-<h2> user_has_google <%= @user_has_google %> </h2>
+<h2> connected_to_spotify <%= @connected_to_spotify %> </h2>
+<h2> connected_to_google <%= @connected_to_google %> </h2>
 
 <%#
     # states: connected, missing_spotify, missing_google, missing_both
@@ -12,13 +12,13 @@
     # if missing both: basic, no prompts
 %>
 
-<% if @user_has_spotify %>
+<% if @connected_to_spotify %>
   <h1> user is has spotify </h1>
 <% else %>
   <h1> user is missing spotify </h1>
 <% end %>
 
-<% if @user_has_google %>
+<% if @connected_to_google %>
   <h1> user is has google </h1>
 <% else %>
   <h1> user is missing google </h1>

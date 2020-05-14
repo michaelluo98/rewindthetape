@@ -1,15 +1,16 @@
 ## TODO
 - setting up user:
-  - add model level verification that user has either spotifyaccess or googlecredentials to 
   - [ ] connect to spotify 
     - change spotify redirect_uri permissions
-    - should go to spotify method on spotify connect, then create method should be the callback since you may/may not create a new user
-    - implement as template? both logging in and signing up
   - [ ] connect to google calendar
     - user identity:
       - scopes: openid profile email
       - endpoint: https://www.googleapis.com/oauth2/v2/userinfo
       - add code=access_token in header and make get request
+  - refactor
+  - error handling
+  - add model level verification that user has either spotifyaccess or googlecredentials
+
 - [ ] setup poller:
   - [ ] design
   - [ ] for check spotify history
@@ -17,6 +18,8 @@
 
 - polish:
   - [ ] landing page after signing up and logging in (currently flash message)
+  - revoke access
+  - display user's name or is it creepy?
 
 - deploying:
   - [ ] add CORS config to prod environment config
