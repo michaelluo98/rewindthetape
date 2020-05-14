@@ -5,8 +5,10 @@ class UsersController < ApplicationController
     @connected_to_spotify = session[:connected_to_spotify]
     @connected_to_google = session[:connected_to_google]
 
-    # if @connected_to_spotify && @connected_to_google
-    #   redirect_to users_landing
+    # TODO change paths when you change buttons
+    if @connected_to_spotify && @connected_to_google
+      redirect_to welcome_path
+    end
   end
 
   # assumes that there is a current_user
@@ -24,20 +26,30 @@ class UsersController < ApplicationController
   end
 
   def find_or_create_user(service, auth_params)
+    # refactor out if statement and faraday response when spotifywrapper is used
+    # need to see if:
+    # - I can get email from just initializing the User object
+    # - If i can create a custom hash so that I can use persisted refresh/access creds 
+    #   - check request.env["omniauth.auth"]
     if service == 'spotify'
       res = Faraday.get('https://api.spotify.com/v1/me') do |req|
         req.headers['Authorization'] = "Bearer #{auth_params['access_token']}"
       end
       user_info = JSON.parse(res.body)
 
-      user = User.find_or_create_by(spotify_email: user_info['email'])
-      user.update(spotify_access: auth_params['access_token'], spotify_refresh: auth_params['refresh_token'])
+      user = nil
+      if logged_in?
+        user = current_user
+        Rails.logger.debug "currentuseridspotify: #{user.id}"
+        user.spotify_email = user_info['email']
+      else
+        user = User.create(spotify_email: user_info['email'])
+      end
+      login(user)
 
-      session[:user_id] = user.id
-      session[:connected_to_spotify] = true
+      user.assign_attributes(spotify_access: auth_params['access_token'], spotify_refresh: auth_params['refresh_token'])
+      user.save
     end
-
-    session[:connected_to_google] = false
   end
 
   def request_spotify_auth
@@ -78,18 +90,43 @@ class UsersController < ApplicationController
       }
       res = Faraday.post(url) { |req| req.body = body }
 
+      # what if users already exists? spotify already exists?
       find_or_create_user("spotify".freeze, JSON.parse(res.body))
     end
 
     redirect_to new_user_path
   end
 
+  def login(user)
+    Rails.logger.debug "-------------------userid #{user.id}"
+    session[:user_id] = user.id
+    session[:connected_to_spotify] = user.spotify_email.nil? ? false : true
+    session[:connected_to_google] = user.google_email.nil? ? false : true
+  end
+
+  def handle_google_callback
+    access_token = request.env['omniauth.auth']
+    # BUG creates a new user, need to link via session
+    user = nil
+    if logged_in?
+      user = current_user
+      Rails.logger.debug "currentuserid google: #{user.id}"
+      user.google_email = access_token.info.email
+    else
+      user = User.create(google_email: access_token.info.email)
+    end
+    login(user)
+
+    user.google_access = access_token.credentials.token
+    # only present the first time user authenticates
+    refresh_token = access_token.credentials.refresh_token
+    user.google_refresh = refresh_token if refresh_token.present?
+    user.save
+
+    redirect_to new_user_path
+  end
+
   def create
-    # TODO going to need to check if they signed up with spotify/gcal
-    # note that params is not empty
-    # @user = User.create(params.require(:user).permit(:username, :password))
-    # session[:user_id] = @user.id
-    # redirect_to '/welcome'
   end
 
   # private

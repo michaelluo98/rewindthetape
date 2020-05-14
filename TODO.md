@@ -1,15 +1,12 @@
 ## TODO
 - setting up user:
-  - [ ] connect to spotify 
-    - change spotify redirect_uri permissions
-  - [ ] connect to google calendar
-    - user identity:
-      - scopes: openid profile email
-      - endpoint: https://www.googleapis.com/oauth2/v2/userinfo
-      - add code=access_token in header and make get request
+  - spotify api wrapper? or migrate to rspotify, rspotify just seems like an overkill
+    - check if request.env['omniauth.auth'] includes refresh and access tokens similar to google
+    - if I want to app to persist, probably safest to just directly support... 
   - refactor
+    - merge google and spotify callback flows
+    - iron out google and spotify flows: test thoroughly: google first, spotify first etc
   - error handling
-  - add model level verification that user has either spotifyaccess or googlecredentials
 
 - [ ] setup poller:
   - [ ] design
@@ -20,6 +17,7 @@
   - [ ] landing page after signing up and logging in (currently flash message)
   - revoke access
   - display user's name or is it creepy?
+  - encrypt user tokens?
 
 - deploying:
   - [ ] add CORS config to prod environment config

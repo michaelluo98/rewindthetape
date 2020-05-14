@@ -11,4 +11,6 @@ Rails.application.routes.draw do
   get 'connect/spotify/callback', to: 'users#handle_spotify_callback'
   get 'connect', to: 'users#connect'
 
+  get 'auth/google_oauth2/callback', to: 'users#handle_google_callback'
+  get 'auth/failure', to: 'users#handle_google_callback'
 end
