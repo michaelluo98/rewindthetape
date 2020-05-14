@@ -10,18 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_12_211121) do
+ActiveRecord::Schema.define(version: 2020_05_14_005332) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "users", force: :cascade do |t|
-    t.string "email"
     t.string "spotify_access"
     t.string "spotify_refresh"
     t.string "google_credentials"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "spotify_email"
+    t.string "google_email"
   end
 
 end
